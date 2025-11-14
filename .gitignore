@@ -1,0 +1,53 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+dist/
+*.tsbuildinfo
+
+# 環境變數
+.env
+.env.local
+.env.*.local
+
+# 編輯器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# 截圖和影片
+screenshot.png
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.webm
+
+# 日誌檔案
+*.log
+logs/
+
+# 暫存檔案
+*.tmp
+*.temp
+
+# 作業系統
+Thumbs.db
+.DS_Store
+
+# 敏感資料
+credentials.json
+config.local.json
+*.pem
+*.key

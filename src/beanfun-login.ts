@@ -3,8 +3,10 @@ import { chromium } from 'playwright';
 async function loginBeanfun() {
   // 啟動瀏覽器
   const browser = await chromium.launch({
+    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', // 指定 Chrome 瀏覽器路徑
     headless: false, // 設為 false 可以看到瀏覽器操作
     slowMo: 500, // 放慢操作速度，方便觀察
+    args: ['--disable-features=ExternalProtocolDialog']
   });
 
   try {
@@ -33,8 +35,67 @@ async function loginBeanfun() {
       await loginButton.click();
       console.log('已點擊登入按鈕');
 
+      // 等待登入表單載入
+      await page.waitForTimeout(2000);
+
+      // 等待 iframe 載入
+      console.log('等待 iframe 載入...');
+      await page.waitForTimeout(1000);
+
+      // 取得第 4 個 iframe 的 contentFrame
+      const loginFrame = page.frameLocator('iframe').nth(3);
+
+      // 輸入帳號
+      console.log('尋找帳號輸入欄位...');
+      const accountInput = loginFrame.getByRole('textbox', { name: '帳號或認證Email：' });
+      await accountInput.click();
+      console.log('已點擊帳號輸入欄位');
+      await accountInput.fill('13g047895123');
+      console.log('已輸入帳號：abc1234');
+
+      // 等待一下
+      await page.waitForTimeout(500);
+
+      // 輸入密碼
+      console.log('尋找密碼輸入欄位...');
+      const passwordInput = loginFrame.getByRole('textbox', { name: '密碼：' });
+      await passwordInput.click();
+      console.log('已點擊密碼輸入欄位');
+      await passwordInput.fill('Zxcv1234');
+      console.log('已輸入密碼');
+
+      // 等待一下
+      await page.waitForTimeout(500);
+
+      // 點擊登入按鈕
+      console.log('尋找登入按鈕...');
+      const submitButton = loginFrame.getByRole('button', { name: '登入' });
+      await submitButton.click();
+      console.log('已點擊登入按鈕');
+
+      // 等待登入處理
+      await page.waitForTimeout(3000);
+      console.log('登入請求已送出');
+
       // 等待一段時間以觀察結果
       await page.waitForTimeout(3000);
+
+      // 點擊 Exit 連結
+      console.log('點擊 Exit 連結...');
+      await page.getByRole('link', { name: 'Exit (key: Esc)' }).click();
+      await page.waitForTimeout(1000);
+
+      // 點擊快速啟動
+      console.log('點擊快速啟動...');
+      await page.getByText('快速啟動').click();
+      await page.waitForTimeout(1000);
+
+      // 點擊 maple00401
+      console.log('點擊 maple00401...');
+      await page.getByText('maple00401').click();
+      await page.waitForTimeout(500);
+      await page.waitForTimeout(500);
+
     } else {
       console.log('未找到登入按鈕，嘗試其他方式...');
 
