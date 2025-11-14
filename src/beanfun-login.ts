@@ -94,7 +94,17 @@ async function loginBeanfun() {
       console.log('點擊 maple00401...');
       await page.getByText('maple00401').click();
       await page.waitForTimeout(500);
-      await page.waitForTimeout(500);
+
+      // 呼叫 AutoHotkey API 按下 Enter
+      console.log('透過 AutoHotkey API 按下 Enter 鍵...');
+      // try {
+      //   const response = await fetch('http://localhost:5000/press_enter', { method: 'POST' });
+      //   const result = await response.json();
+      //   console.log('AutoHotkey API 回應:', result);
+      // } catch (error) {
+      //   console.error('呼叫 AutoHotkey API 失敗:', error);
+      // }
+      // await page.waitForTimeout(500);
 
     } else {
       console.log('未找到登入按鈕，嘗試其他方式...');

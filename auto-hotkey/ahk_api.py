@@ -10,16 +10,18 @@ import os
 app = Flask(__name__)
 
 # AutoHotkey 執行檔路徑（請根據實際安裝路徑調整）
-AHK_EXE = r"C:\Program Files\AutoHotkey\AutoHotkey.exe"
+AHK_EXE = r"D:\\4_harddisk_c\\Program Files\\AutoHotkey\\v2\\AutoHotkey.exe"
 
 @app.route('/press_enter', methods=['POST'])
 def press_enter():
-    """按下 Enter 鍵"""
+    """先按左鍵再按右鍵，間隔 0.5 秒"""
     try:
-        # 使用 AutoHotkey 執行按鍵指令
-        script = "Send {Enter}"
+        # 使用 AutoHotkey v2 執行按鍵指令
+        script = '''Click "Left"
+Sleep 500
+Click "Right"'''
         subprocess.run([AHK_EXE, '*'], input=script.encode('utf-8'), check=True)
-        return jsonify({"status": "success", "message": "Enter key pressed"}), 200
+        return jsonify({"status": "success", "message": "Left click, then right click after 0.5s"}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
