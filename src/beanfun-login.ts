@@ -1,6 +1,21 @@
 import { chromium } from 'playwright';
 
 async function loginBeanfun() {
+  // 檢查 AutoHotkey API 是否正常運行
+  console.log('檢查 AutoHotkey API 健康狀態...');
+  try {
+    const healthResponse = await fetch('http://localhost:5000/health');
+    const healthResult = await healthResponse.json() as { status: string };
+    console.log('AutoHotkey API 健康檢查:', healthResult);
+    if (healthResult.status !== 'ok') {
+      throw new Error('AutoHotkey API 狀態異常');
+    }
+  } catch (error) {
+    console.error('AutoHotkey API 未啟動或無法連線，請先執行: uv run ahk_api.py');
+    console.error('錯誤詳情:', error);
+    return;
+  }
+
   // 啟動瀏覽器
   const browser = await chromium.launch({
     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', // 指定 Chrome 瀏覽器路徑
@@ -95,16 +110,16 @@ async function loginBeanfun() {
       await page.getByText('maple00401').click();
       await page.waitForTimeout(500);
 
-      // 呼叫 AutoHotkey API 按下 Enter
-      console.log('透過 AutoHotkey API 按下 Enter 鍵...');
-      // try {
-      //   const response = await fetch('http://localhost:5000/press_enter', { method: 'POST' });
-      //   const result = await response.json();
-      //   console.log('AutoHotkey API 回應:', result);
-      // } catch (error) {
-      //   console.error('呼叫 AutoHotkey API 失敗:', error);
-      // }
-      // await page.waitForTimeout(500);
+      // 呼叫 AutoHotkey API 按下左鍵和 Enter
+      console.log('透過 AutoHotkey API 按下左鍵和 Enter 鍵...');
+      try {
+        const response = await fetch('http://localhost:5000/press_enter', { method: 'POST' });
+        const result = await response.json() as { status: string; message: string };
+        console.log('AutoHotkey API 回應:', result);
+      } catch (error) {
+        console.error('呼叫 AutoHotkey API 失敗:', error);
+      }
+      await page.waitForTimeout(500);
 
     } else {
       console.log('未找到登入按鈕，嘗試其他方式...');

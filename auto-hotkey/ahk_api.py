@@ -14,14 +14,14 @@ AHK_EXE = r"D:\\4_harddisk_c\\Program Files\\AutoHotkey\\v2\\AutoHotkey.exe"
 
 @app.route('/press_enter', methods=['POST'])
 def press_enter():
-    """先按左鍵再按右鍵，間隔 0.5 秒"""
+    """先按方向鍵左鍵，等待 0.5 秒，最後按 Enter"""
     try:
         # 使用 AutoHotkey v2 執行按鍵指令
-        script = '''Click "Left"
+        script = '''Send "{Left}"
 Sleep 500
-Click "Right"'''
+Send "{Enter}"'''
         subprocess.run([AHK_EXE, '*'], input=script.encode('utf-8'), check=True)
-        return jsonify({"status": "success", "message": "Left click, then right click after 0.5s"}), 200
+        return jsonify({"status": "success", "message": "Left arrow, then Enter pressed"}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
